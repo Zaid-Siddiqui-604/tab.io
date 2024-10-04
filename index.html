@@ -71,7 +71,7 @@
 
   <div class="coin-container">
     <div class="numbers">
-      <h4>Total Numbers</h4>
+      <h4>Total Numberss</h4>
       <h3 id="total">0</h3>
     </div>
     <img src="https://static.vecteezy.com/system/resources/previews/008/509/269/non_2x/3d-money-coin-currency-dollar-illustration-png.png" alt="Coin" id="coin">
@@ -81,26 +81,24 @@
     const coin = document.getElementById('coin');
     const totalDisplay = document.getElementById('total');
     let total = 0;
-    let lastTouchCount = 0;  // To track the number of touches
+    let touchHandled = false;  // Flag to track if touch event is handled
 
     // Handle multiple touch events
     coin.addEventListener('touchstart', (e) => {
-      const touchCount = e.touches.length;
-
-      // Only update if the number of touches has changed
-      if (touchCount !== lastTouchCount) {
+      if (!touchHandled) { // Check if the touch event is already handled
+        const touchCount = e.touches.length;
         for (let i = 0; i < touchCount; i++) {
           const touch = e.touches[i];
           createEffect(touch.clientX, touch.clientY);
         }
         updateTotal(touchCount);
-        lastTouchCount = touchCount;  // Update the last touch count
+        touchHandled = true; // Mark event as handled
       }
     });
 
-    // Reset the touch count after the touch ends
+    // Reset the touchHandled flag after touch ends
     coin.addEventListener('touchend', () => {
-      lastTouchCount = 0;
+      touchHandled = false;
     });
 
     // Handle single click event
