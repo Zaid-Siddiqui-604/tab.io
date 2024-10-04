@@ -78,43 +78,46 @@
 
   <script>
     const coin = document.getElementById('coin');
-const totalDisplay = document.getElementById('total');
-let total = 0;
+    const totalDisplay = document.getElementById('total');
+    let total = 0;
+    let isTouching = false; // New flag to control multiple touches
 
-coin.addEventListener('touchstart', (e) => {
-  for (let i = 0; i < e.touches.length; i++) {
-    const touch = e.touches[i];
-    createEffect(touch.clientX, touch.clientY);
-  }
-  updateTotal(e.touches.length);
-});
+    coin.addEventListener('touchstart', (e) => {
+      if (!isTouching) {  // If no touch is currently being handled
+        isTouching = true;
+        const touchCount = e.touches.length;
+        createEffect(e.touches[0].clientX, e.touches[0].clientY); // Apply the effect only once
+        updateTotal(touchCount);
+      }
+    });
 
-coin.addEventListener('click', (e) => {
-  createEffect(e.clientX, e.clientY);
-  updateTotal(1); 
-  animateCoin(); 
-});
+    coin.addEventListener('touchend', () => {
+      isTouching = false;  // Reset the flag when touch ends
+    });
 
-function createEffect(x, y) {
-  const effect = document.createElement('div');
-  effect.textContent = '+2';
-  effect.classList.add('coin-effect');
-  effect.style.left = `${x - 10}px`;
-  effect.style.top = `${y - 30}px`;
-  document.body.appendChild(effect);
+    coin.addEventListener('click', (e) => {
+      createEffect(e.clientX, e.clientY);
+      updateTotal(1); 
+      animateCoin(); 
+    });
 
-  setTimeout(() => {
-    effect.remove();
-  }, 10000);
-}
+    function createEffect(x, y) {
+      const effect = document.createElement('div');
+      effect.textContent = '+2';
+      effect.classList.add('coin-effect');
+      effect.style.left = `${x - 10}px`;
+      effect.style.top = `${y - 30}px`;
+      document.body.appendChild(effect);
 
-function updateTotal(touchCount) {
-  total += 2* touchCount; 
-  totalDisplay.textContent = total; 
-}
+      setTimeout(() => {
+        effect.remove();
+      }, 1000);
+    }
 
-
+    function updateTotal(touchCount) {
+      total += 2 * touchCount; 
+      totalDisplay.textContent = total; 
+    }
   </script>
-
 </body>
 </html>
