@@ -70,7 +70,7 @@
 <body>
   <div class="coin-container">
     <div class="numbers">
-      <h4>Total Numberss</h4>
+      <h4>Total Numbers</h4>
       <h3 id="total">0</h3>
     </div>
     <img src="https://static.vecteezy.com/system/resources/previews/008/509/269/non_2x/3d-money-coin-currency-dollar-illustration-png.png" alt="Coin" id="coin">
@@ -80,25 +80,19 @@
     const coin = document.getElementById('coin');
     const totalDisplay = document.getElementById('total');
     let total = 0;
-    let isTouching = false; // New flag to control multiple touches
 
     coin.addEventListener('touchstart', (e) => {
-      if (!isTouching) {  // If no touch is currently being handled
-        isTouching = true;
-        const touchCount = e.touches.length;
-        createEffect(e.touches[0].clientX, e.touches[0].clientY); // Apply the effect only once
-        updateTotal(touchCount);
+      const touchCount = e.touches.length; // Count the number of touches
+      for (let i = 0; i < touchCount; i++) {
+        const touch = e.touches[i];
+        createEffect(touch.clientX, touch.clientY);
       }
-    });
-
-    coin.addEventListener('touchend', () => {
-      isTouching = false;  // Reset the flag when touch ends
+      updateTotal(touchCount); // Update total based on touch count
     });
 
     coin.addEventListener('click', (e) => {
-      createEffect(e.clientX, e.clientY);
-      updateTotal(1); 
-      animateCoin(); 
+      createEffect(e.clientX, e.clientY); 
+      updateTotal(1); // Update total for single click
     });
 
     function createEffect(x, y) {
@@ -116,7 +110,7 @@
 
     function updateTotal(touchCount) {
       total += 2 * touchCount; 
-      totalDisplay.textContent = total; 
+      totalDisplay.textContent = total;
     }
   </script>
 </body>
