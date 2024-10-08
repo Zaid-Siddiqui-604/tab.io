@@ -38,16 +38,17 @@
       font-size: 40px;
       font-weight: bold;
       animation: fade 1s ease-out forwards;
+      transform: translate(-50%, -100%); /* Centering effect */
     }
 
     @keyframes fade {
       0% {
         opacity: 1;
-        transform: translateY(0);
+        transform: translate(-50%, -100%) translateY(0);
       }
       100% {
         opacity: 0;
-        transform: translateY(-30px);
+        transform: translate(-50%, -100%) translateY(-30px);
       }
     }
 
@@ -69,7 +70,7 @@
 
   <div class="coin-container">
     <div class="numbers">
-      <h4>Total</h4>
+      <h4>Total Numbers</h4>
       <h3 id="total">0</h3>
     </div>
     <img
@@ -84,48 +85,48 @@
     const coin = document.getElementById('coin');
     const coinContainer = document.querySelector('.coin-container');
     let total = 0;
+
     coin.addEventListener('click', (e) => {
       const rect = coin.getBoundingClientRect();
-      const x = e.clientX - rect.left;
-      const y = e.clientY - rect.top;  
+      const x = e.clientX - rect.left; // Calculate x relative to the coin image
+      const y = e.clientY - rect.top;  // Calculate y relative to the coin image
 
       createEffect(x, y);
-      updateTotal(1); 
+      updateTotal(1); // Update total for a single click
     });
 
-    // Handle touch event
     coin.addEventListener('touchstart', (e) => {
-      e.preventDefault();
+      e.preventDefault(); // Prevent default touch behavior
       const rect = coin.getBoundingClientRect();
       const touchCount = e.changedTouches.length;
 
       for (let i = 0; i < touchCount; i++) {
         const touch = e.changedTouches[i];
-        const x = touch.clientX - rect.left;
-        const y = touch.clientY - rect.top;
+        const x = touch.clientX - rect.left; // Calculate x relative to the coin image
+        const y = touch.clientY - rect.top;  // Calculate y relative to the coin image
 
         createEffect(x, y);
       }
 
-      updateTotal(touchCount);  // Update total based on number of touches
+      updateTotal(touchCount); // Update total based on number of touches
     });
 
     function createEffect(x, y) {
       const effect = document.createElement('div');
       effect.textContent = '+2';
       effect.classList.add('coin-effect');
-      effect.style.left = `${x}px`;
-      effect.style.top = `${y}px`;
+      effect.style.left = `${x}px`; // Set left position
+      effect.style.top = `${y}px`;  // Set top position
       coinContainer.appendChild(effect);  // Append effect to the coin container
 
       setTimeout(() => {
         effect.remove();
-      }, 3000);
+      }, 1000);
     }
 
     function updateTotal(touchCount) {
-      total += 2 * touchCount;
-      totalDisplay.textContent = total;
+      total += 2 * touchCount; // Increment total by 2 for each touch
+      totalDisplay.textContent = total; // Update displayed total
     }
   </script>
 
